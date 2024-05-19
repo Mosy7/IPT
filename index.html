@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #login-button {
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #genre-form {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #generate-button {
+            padding: 10px 20px;
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="login-button">Login with Spotify</button>
+    <form id="genre-form">
+        <label for="genre">Choose a genre:</label>
+        <select id="genre" name="genre">
+            <option value="pop">Pop</option>
+            <option value="rock">Rock</option>
+            <option value="hip-hop">Hip-Hop</option>
+            <option value="jazz">Jazz</option>
+        </select>
+        <button type="button" id="generate-button">Generate Recommendations</button>
+    </form>
+    <script>
+        document.getElementById('login-button').addEventListener('click', function() {
+            window.location.href = '/login';
+        });
+
+        document.getElementById('generate-button').addEventListener('click', function() {
+            const genre = document.getElementById('genre').value;
+            fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ genre })
+            }).then(response => response.json()).then(data => {
+                alert('Recommended Tracks: ' + data.tracks.join(', '));
+            });
+        });
+    </script>
+</body>
+</html>
